@@ -3,7 +3,8 @@ var express = require('express');
 var faker = require('faker');
 var cors = require('cors');
 var bodyParser = require('body-parser');
-var jwt = require('jsonwebtoken')
+var jwt = require('jsonwebtoken');
+var expressJwt = require('express-jwt');
 
 // In lieu of a database, we're just going to include a user object here.
 var user = {
@@ -16,6 +17,7 @@ var app = express();
 // Enable Cross-Origin Resource Sharing
 app.use(cors());
 app.use(bodyParser.json());
+app.use(expressJwt({secret: process.env.JWTTOKEN}).unless({path: ['/login']})); // This totally broke the get random user function.  
 app.use(express.static(__dirname + '/public'));
 
 app.get('/random-user', function(req, res){
